@@ -24,7 +24,7 @@ A modern Single Page Application (SPA) to explore NASA data, maintain a learning
 
 ## Prerequisites
 
-- Node.js 18+
+- Node.js 18+ (for the xslx exportation)
 - npm or yarn
 - Backend API running (local or remote)
 
