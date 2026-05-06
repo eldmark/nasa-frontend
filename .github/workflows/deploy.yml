@@ -3,9 +3,6 @@ name: Deploy Frontend to GitHub Pages
 on:
   push:
     branches: ['master']
-    paths:
-      - 'nasa-frontend/**'
-      - '.github/workflows/deploy.yml'
 
 permissions:
   contents: read
@@ -26,20 +23,20 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-          cache-dependency-path: 'nasa-frontend/package-lock.json'
+          cache-dependency-path: 'package-lock.json'
       
       - name: Install dependencies
-        working-directory: nasa-frontend
         run: npm ci
-      
+
       - name: Build with Vite
-        working-directory: nasa-frontend
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
         run: npm run build
-      
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'nasa-frontend/dist'
+          path: 'dist'
   
   deploy:
     environment:
