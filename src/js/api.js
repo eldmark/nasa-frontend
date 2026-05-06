@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3001/api';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 const handleResponse = async (response) => {
     if (!response.ok) {
@@ -16,7 +16,13 @@ export const fetchAsteroids = () => fetch(`${BASE_URL}/asteroids`).then(handleRe
 export const fetchTech = () => fetch(`${BASE_URL}/projects`).then(handleResponse);
 
 // --- Favorites (Postgres) ---
-export const getFavorites = () => fetch(`${BASE_URL}/favorites`).then(handleResponse);
+export const getFavorites = (params = {}) => {
+    const url = new URL(`${BASE_URL}/favorites`);
+    Object.keys(params).forEach(key => {
+        if (params[key]) url.searchParams.append(key, params[key]);
+    });
+    return fetch(url.toString()).then(handleResponse);
+};
 
 export const saveFavorite = (type, item) => fetch(`${BASE_URL}/favorites`, {
     method: 'POST',
@@ -35,7 +41,13 @@ export const deleteFavorite = (id) => fetch(`${BASE_URL}/favorites/${id}`, {
 }).then(handleResponse);
 
 // --- Custom Planets ---
-export const fetchCustomPlanets = () => fetch(`${BASE_URL}/custom-planets`).then(handleResponse);
+export const fetchCustomPlanets = (params = {}) => {
+    const url = new URL(`${BASE_URL}/custom-planets`);
+    Object.keys(params).forEach(key => {
+        if (params[key]) url.searchParams.append(key, params[key]);
+    });
+    return fetch(url.toString()).then(handleResponse);
+};
 
 export const createCustomPlanet = (planet) => fetch(`${BASE_URL}/custom-planets`, {
     method: 'POST',
